@@ -1,20 +1,21 @@
+[![Clojars Project](https://img.shields.io/clojars/v/markdown-to-hiccup.svg)](https://clojars.org/markdown-to-hiccup)
+
 # markdown-to-hiccup
 
 Simple library for converting markdown strings or files into Clojure and ClojureScript compatible hiccup data structures
 
 ## Installation
+### Leiningen/Boot
+[markdown-to-hiccup "0.1.0-SNAPSHOT"]
 
-Download from (TODO)
+### Clojure CLI/deps.edn
+markdown-to-hiccup {:mvn/version "0.1.0-SNAPSHOT"}
+
+### Gradle
+compile 'markdown-to-hiccup:markdown-to-hiccup:0.1.0-SNAPSHOT'
 
 ## Usage
 
-FIXME: explanation
-
-    $ java -jar markdown-to-hiccup-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
 
 ## Examples
 
@@ -30,6 +31,6 @@ FIXME: listing of options this app accepts.
 
 ## License
 
-Copyright © 2018 FIXME
+Copyright © 2018 Michael Carolin
 
 Distributed under the MIT License
