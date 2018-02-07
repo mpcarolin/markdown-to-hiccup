@@ -9,9 +9,9 @@
    passing parameters to configure markdown to html translation. See
    https://github.com/pauldorman/markdown-clj for valid parameters"
   ([md-str & params]
-  (let [html (md-to-html-string md-str)
-        dom  (parse html)]
-    (as-hiccup dom)))
+   (let [html (md-to-html-string md-str)
+         dom  (parse html)]
+     (as-hiccup dom)))
   ([md-str]
    (md->hiccup md-str {})))
 
