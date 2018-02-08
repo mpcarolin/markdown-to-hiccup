@@ -2,7 +2,7 @@
 
 # markdown-to-hiccup
 
-Simple library for converting markdown strings or files into Clojure and ClojureScript compatible hiccup data structures
+Simple library for converting markdown strings or files into ClojureScript compatible hiccup data structures
 
 ## Installation
 ### Leiningen/Boot
