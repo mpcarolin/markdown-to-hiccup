@@ -15,9 +15,6 @@ markdown-to-hiccup {:mvn/version "0.1.0-SNAPSHOT"}
 compile 'markdown-to-hiccup:markdown-to-hiccup:0.1.0-SNAPSHOT'
 
 ## Usage
-
-
-## Examples
 ```
 (ns example.core
 	(:require [markdown-to-hiccup.core :as m]))
@@ -26,16 +23,6 @@ compile 'markdown-to-hiccup:markdown-to-hiccup:0.1.0-SNAPSHOT'
 
 => ([:html {} [:head {}] [:body {} [:h1 {} "Title"]]])
 ```
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
 
 ## License
 
