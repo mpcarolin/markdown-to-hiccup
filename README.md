@@ -18,12 +18,14 @@ compile 'markdown-to-hiccup:markdown-to-hiccup:0.1.0-SNAPSHOT'
 
 
 ## Examples
-`(ns example.core
+```
+(ns example.core
 	(:require [mardown-to-hiccup.core :as m]))
 
-(m/md->hiccup "#Title")`
+(m/md->hiccup "#Title")
 
-`([:html {} [:head {}] [:body {} [:h1 {} "Title"]]])`
+=> ([:html {} [:head {}] [:body {} [:h1 {} "Title"]]])
+```
 
 ...
 
