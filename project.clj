@@ -7,6 +7,8 @@
   ;; and ClojureScript currently needs this flag added to the compiler
   ;; under Java 9
   :jvm-opts ["--add-modules" "java.xml.bind"]
+
+  :signing {:gpg-key "mpcarolin-markdown-to-hiccup"} ;; using the key uid
   
   :min-lein-version "2.7.1"
 
