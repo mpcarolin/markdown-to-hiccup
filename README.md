@@ -6,13 +6,13 @@ Simple library for converting markdown strings or files into ClojureScript compa
 
 ## Installation
 ### Leiningen/Boot
-[markdown-to-hiccup "0.1.0-SNAPSHOT"]
+[markdown-to-hiccup "0.2.2"]
 
 ### Clojure CLI/deps.edn
-markdown-to-hiccup {:mvn/version "0.1.0-SNAPSHOT"}
+`markdown-to-hiccup {:mvn/version "0.2.2"}`
 
 ### Gradle
-compile 'markdown-to-hiccup:markdown-to-hiccup:0.1.0-SNAPSHOT'
+`compile 'markdown-to-hiccup:markdown-to-hiccup:0.2.2'`
 
 ## Usage
 ```
