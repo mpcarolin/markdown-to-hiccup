@@ -22,12 +22,30 @@ Use md->hiccup (available in both Clojure and ClojureScript) to convert a markdo
 
 (m/md->hiccup "#Title")
 
-=> ([:html {} [:head {}] [:body {} [:h1 {} "Title"]]])
+=> [:html {} [:head {}] [:body {} [:h1 {} "Title"]]]
 ```
 
-For just Clojure, there is also a function for automatically reading in a markdown file and outputting hiccup:
+If you just want the hiccup without the html, head, and body tags, pass it through the component function:
+```
+(->> "#Title"
+     (m/md->hiccup)
+     (m/component))
+     
+=> [:h1 {} "Title"]
+```
+
+If you want some arbitrary tag, use hicc-in:
+```
+(hicc-in hiccup :body)   
+   
+=> [:body {} [:h1 {} "Title"]]
+```
+
+Finally, for just Clojure, there is also a function for automatically reading in a markdown file from disk and outputting hiccup:
 ```
 (m/file->hiccup file-path-to-markdown-file)
+
+=> [:html {} [:head {}] [:body {} [:h1 {} "Title"]]]
 ```
 
 ## License
