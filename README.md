@@ -1,42 +1,56 @@
-[![Clojars Project](https://img.shields.io/clojars/v/markdown-to-hiccup.svg)](https://clojars.org/markdown-to-hiccup)
-
 # markdown-to-hiccup
 
-Simple library for converting markdown strings or files into ClojureScript compatible hiccup data structures
+FIXME: Write a one-line description of your library/project.
 
-## Installation
-### Leiningen/Boot
-[markdown-to-hiccup "0.1.0-SNAPSHOT"]
+## Overview
 
-### Clojure CLI/deps.edn
-markdown-to-hiccup {:mvn/version "0.1.0-SNAPSHOT"}
+FIXME: Write a paragraph about the library/project and highlight its goals.
 
-### Gradle
-compile 'markdown-to-hiccup:markdown-to-hiccup:0.1.0-SNAPSHOT'
+## Setup
 
-## Usage
+Most of the following scripts require [rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/) (on OS X installable via brew).
 
+Build your project once in dev mode with the following script and then open `index.html` in your browser.
 
-## Examples
-`(ns example.core
-	(:require [mardown-to-hiccup.core :as m]))
+    ./scripts/build
 
-(m/md->hiccup "#Title")`
+To auto build your project in dev mode:
 
-`([:html {} [:head {}] [:body {} [:h1 {} "Title"]]])`
+    ./scripts/watch
 
-...
+To start an auto-building Node REPL:
 
-### Bugs
+    ./scripts/repl
 
-...
+To get source map support in the Node REPL:
 
-### Any Other Sections
-### That You Think
-### Might be Useful
+    lein npm install
+    
+To start a browser REPL:
+    
+1. Uncomment the following lines in src/markdown_to_hiccup/core.cljs:
+```clojure
+;; (defonce conn
+;;   (repl/connect "http://localhost:9000/repl"))
+```
+2. Run `./scripts/brepl`
+3. Browse to `http://localhost:9000` (you should see `Hello world!` in the web console)
+4. (back to step 3) you should now see the REPL prompt: `cljs.user=>`
+5. You may now evaluate ClojureScript statements in the browser context.
+    
+For more info using the browser as a REPL environment, see
+[this](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment).
+    
+Clean project specific out:
+
+    lein clean
+     
+Build a single release artifact with the following script and then open `index_release.html` in your browser.
+
+    ./scripts/release
 
 ## License
 
-Copyright © 2018 Michael Carolin
+Copyright © 2016 FIXME
 
-Distributed under the MIT License
+Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
