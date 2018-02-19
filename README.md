@@ -15,6 +15,7 @@ Simple library for converting markdown strings or files into Clojure/Script comp
 `compile 'markdown-to-hiccup:markdown-to-hiccup:0.2.5'`
 
 ## Usage
+Use md->hiccup (available in both Clojure and ClojureScript) to convert a markdown string to hiccup:
 ```
 (ns example.core
 	(:require [markdown-to-hiccup.core :as m]))
@@ -22,6 +23,11 @@ Simple library for converting markdown strings or files into Clojure/Script comp
 (m/md->hiccup "#Title")
 
 => ([:html {} [:head {}] [:body {} [:h1 {} "Title"]]])
+```
+
+For just Clojure, there is also a function for automatically reading in a markdown file and outputting hiccup:
+```
+(m/file->hiccup file-path-to-markdown-file)
 ```
 
 ## License
