@@ -1,56 +1,31 @@
+[![Clojars Project](https://img.shields.io/clojars/v/markdown-to-hiccup.svg)](https://clojars.org/markdown-to-hiccup)
+
 # markdown-to-hiccup
 
-FIXME: Write a one-line description of your library/project.
+Simple library for converting markdown strings or files into Clojure/Script compatible hiccup data structures
 
-## Overview
+## Installation
+### Leiningen/Boot
+`[markdown-to-hiccup "0.2.5"]`
 
-FIXME: Write a paragraph about the library/project and highlight its goals.
+### Clojure CLI/deps.edn
+`markdown-to-hiccup {:mvn/version "0.2.5"}`
 
-## Setup
+### Gradle
+`compile 'markdown-to-hiccup:markdown-to-hiccup:0.2.5'`
 
-Most of the following scripts require [rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/) (on OS X installable via brew).
-
-Build your project once in dev mode with the following script and then open `index.html` in your browser.
-
-    ./scripts/build
-
-To auto build your project in dev mode:
-
-    ./scripts/watch
-
-To start an auto-building Node REPL:
-
-    ./scripts/repl
-
-To get source map support in the Node REPL:
-
-    lein npm install
-    
-To start a browser REPL:
-    
-1. Uncomment the following lines in src/markdown_to_hiccup/core.cljs:
-```clojure
-;; (defonce conn
-;;   (repl/connect "http://localhost:9000/repl"))
+## Usage
 ```
-2. Run `./scripts/brepl`
-3. Browse to `http://localhost:9000` (you should see `Hello world!` in the web console)
-4. (back to step 3) you should now see the REPL prompt: `cljs.user=>`
-5. You may now evaluate ClojureScript statements in the browser context.
-    
-For more info using the browser as a REPL environment, see
-[this](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment).
-    
-Clean project specific out:
+(ns example.core
+	(:require [markdown-to-hiccup.core :as m]))
 
-    lein clean
-     
-Build a single release artifact with the following script and then open `index_release.html` in your browser.
+(m/md->hiccup "#Title")
 
-    ./scripts/release
+=> ([:html {} [:head {}] [:body {} [:h1 {} "Title"]]])
+```
 
 ## License
 
-Copyright © 2016 FIXME
+Copyright © 2018 Michael Carolin
 
-Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
+Distributed under the MIT License
