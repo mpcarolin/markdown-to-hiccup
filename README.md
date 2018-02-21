@@ -37,7 +37,7 @@ If you just want the hiccup without the html, head, and body tags, pass it throu
 
 If you want some arbitrary tag, use hicc-in:
 ```
-(hicc-in hiccup :body)   
+(m/hicc-in hiccup :body)   
    
 => [:body {} [:h1 {} "Title"]]
 ```
