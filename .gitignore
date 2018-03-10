@@ -9,3 +9,6 @@ pom.xml
 .lein-repl-history
 .lein-plugins/
 .repl*
+*~
+.DS_Store
+*.iml

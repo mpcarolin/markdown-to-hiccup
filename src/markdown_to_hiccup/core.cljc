@@ -15,23 +15,31 @@
   ([md-str]
    (md->hiccup md-str {})))
 
-(defn- el-eq
+(defn- el-eq?
   [hiccup keyword]
   (if (sequential? hiccup)
     (= (first hiccup) keyword)
     (= hiccup keyword)))
 
+;; TODO: allow any number of keywords to be passed in, to find nested components
 (defn hicc-in
   "Accepts a hiccup data structure and a keyword representing
-  an html element tag (e.g. :body) and returns the nested
+  an html element tag (e.g. :body) and returns the first nested
   hiccup vector identified by the keyword."
-  [hiccup keyword]
-  (loop [curr-hiccup hiccup]
-    (let [root (first curr-hiccup)]
-      (cond
-        (empty? curr-hiccup) []
-        (el-eq root keyword) curr-hiccup
-        :else                (recur (rest curr-hiccup))))))
+  [hiccup kw]
+  (let [root (first hiccup)]
+    (cond
+      (empty? hiccup)        []
+      (map? root)            (recur (rest hiccup) kw)
+      (vector? root)         (let [branch-result (hicc-in-3 root kw)]
+                               (if (empty? branch-result)
+                                 (recur (rest hiccup) kw)
+                                 branch-result))
+      (el-eq? root kw)       hiccup
+      :else                  (recur (rest hiccup) kw))))
+
+(def hicc [:html {} [:body {} [:h1 {} "hi"]]])
+(hicc-in-3 hicc :body)
 
 (defn component
   "Accepts hiccup and returns the same hiccup only
@@ -39,8 +47,9 @@
    if you want to nest your markdown hiccup in existing
    hiccup data structures."
   [hiccup]
-  (let [body (first (hicc-in hiccup :body))]
-    (body 2)))
+  (let [body (hicc-in-3 hiccup :body)]
+    (cons :div (rest body))))
+
 
 #?(:clj
   (defn file->hiccup
