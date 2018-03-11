@@ -72,24 +72,36 @@
         :else                      (recur (rest arglist)
                                           (conj ret-vec curr-arg))))))
 
+
+(defn- same-length?
+  [coll-a coll-b]
+  (= (count coll-a)
+     (count coll-b)))
+
 (defn- get-nested-hiccup
   "Recursive helper function for hiccup-in."
   [hiccup kw-pairs]
   (let [[kw nth-kw]   (first kw-pairs)
-        front         (first hiccup)]
+        front         (first hiccup)
+        remaining     (rest hiccup)]
     (cond
       (empty? hiccup)        []
       (nil? kw)              hiccup
-      (map? front)           (recur (rest hiccup) kw-pairs)
-      (vector? front)        (let [branch-result (hicc-in-helper front kw-pairs)]
+      (map? front)           (recur remaining kw-pairs)
+      (vector? front)        (let [branch-result (get-nested-hiccup front kw-pairs)]
                                (if (empty? branch-result)
-                                 (recur (rest hiccup) kw-pairs)
+                                 (let [nested-front (first front)]
+                                   (if (= nested-front kw) ;; the child recurse did find a match, but we need to update our kw-pair list if the first element had a match
+                                    (recur remaining (dec-front kw-pairs))
+                                    (recur remaining kw-pairs)))
                                  branch-result))
       (= front kw)           (let [new-pairs (dec-front kw-pairs)]
-                               (if (empty? new-pairs)
-                                 hiccup
-                                 (recur (rest hiccup) (dec-front kw-pairs))))
-      :else                  (recur (rest hiccup) kw-pairs))))
+                               (cond
+                                 (empty? new-pairs)                  hiccup                         ;; no keywords left, return what we have found
+                                 :else                               (recur remaining new-pairs)))  ;; prceed to the next instance of the keyword
+      :else                  (recur remaining kw-pairs))))
+
+
 
 (defn hiccup-in
   "Accepts a hiccup data structure and any series of args in keyword, index order. 
@@ -117,3 +129,5 @@
   [file-path]
   (let [contents (slurp file-path)]
     (md->hiccup contents))))
+
+

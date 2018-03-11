@@ -52,16 +52,19 @@
       (is (= expected found)))))
 
 (deftest hiccup-in
-  (testing "It returns the first nested component of hiccup."
+  (testing "It works with neighbor elements identified by index."
+    (let [nested-hicc   [:body {} [:div {} [:div2 {} [:h1 {} "leaf"] [:h1 {} "find me"]]]]
+          expected      [:h1 {} "find me"]
+          found         (m/hiccup-in nested-hicc :body 0 :div :div2 0 :h1 1)]
+        (is (= expected found))))
+  (testing "It returns the first nested component of hiccup when the leading path is unspecified"
     (let [hiccup [:body {} [:div [:h1 {} "find me"]]]
           expected [:h1 {} "find me"]]
       (is (= expected
              (m/hiccup-in hiccup :h1)))))
-  (testing "it works with multiple keys."
+  (testing "it works with multiple keys and without specified indices"
     (let [nested-hicc [:body {} [:div {} [:div2 {} [:h1 {} "leaf"]]]]
           expected    [:h1 {} "leaf"]
           found       (m/hiccup-in nested-hicc :body :div :div2 :h1)]
       (is (= expected found)))))
-
-
 
