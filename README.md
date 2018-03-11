@@ -47,7 +47,7 @@ vs.
 
 (let [hiccup (md->hiccup "#Title\n#SecondTitle")]
 	(hiccup-in hiccup :html :body :h1 1)) ;; note the integer paired with :h1
-=> [:h1 {} "Title"]
+=> [:h1 {} "SecondTitle"]
 ```
 ### Clojure-only
 Finally, for just Clojure, there is also a function for automatically reading in a markdown file from disk and outputting hiccup:
