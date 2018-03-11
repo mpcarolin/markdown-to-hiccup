@@ -1,4 +1,4 @@
-(defproject markdown-to-hiccup "0.2.6"
+(defproject markdown-to-hiccup "0.3.0"
   :description "Simple library for converting markdown into hiccup data structures for Clojure/Script"
   :url "https://github.com/mpcarolin/markdown-to-hiccup"
   :dependencies [[org.clojure/clojure "1.9.0"]
