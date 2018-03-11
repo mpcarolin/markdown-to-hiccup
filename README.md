@@ -6,13 +6,13 @@ Simple library for converting markdown strings or files into Clojure/Script comp
 
 ## Installation
 ### Leiningen/Boot
-`[markdown-to-hiccup "0.2.6"]`
+`[markdown-to-hiccup "0.3.0"]`
 
 ### Clojure CLI/deps.edn
-`markdown-to-hiccup {:mvn/version "0.2.6"}`
+`markdown-to-hiccup {:mvn/version "0.3.0"}`
 
 ### Gradle
-`compile 'markdown-to-hiccup:markdown-to-hiccup:0.2.6'`
+`compile 'markdown-to-hiccup:markdown-to-hiccup:0.3.0'`
 
 ## Usage
 Use md->hiccup (available in both Clojure and ClojureScript) to convert a markdown string to hiccup:
@@ -27,18 +27,26 @@ Use md->hiccup (available in both Clojure and ClojureScript) to convert a markdo
 
 If you just want the hiccup without the html, head, and body tags, pass it through the component function:
 ```
-(->> "#Title"
+(->> "#Title\n* Bullet"
      (m/md->hiccup)
      (m/component))
      
-=> [:h1 {} "Title"]
+=> [:div {} [:h1 {} "Title"] [:ul {} [:li {} "Bullet"]]]
+
 ```
 
-If you want some arbitrary tag, use hicc-in:
+If you want a specific nested hiccup vector, use hiccup-in. It lets you specify the keywords
+(and indices for matching neighbor hiccup elements) to extract nested hiccup:
 ```
-(hicc-in hiccup :body)   
-   
-=> [:body {} [:h1 {} "Title"]]
+(let [hiccup (md->hiccup "#Title\n#SecondTitle")]
+	(hiccup-in hiccup :html :body :h1 0))
+=> [:h1 {} "Title"]
+
+vs.
+
+(let [hiccup (md->hiccup "#Title\n#SecondTitle")]
+	(hiccup-in hiccup :html :body :h1 1))
+=> [:h1 {} "Title"]
 ```
 
 Finally, for just Clojure, there is also a function for automatically reading in a markdown file from disk and outputting hiccup:
