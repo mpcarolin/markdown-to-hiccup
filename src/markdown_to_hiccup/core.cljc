@@ -4,9 +4,7 @@
                                      :cljs [md->html])]))
 
 (defn md->hiccup
-  "Generates a valid hiccup data structure from a markdown string. Allows
-   passing parameters to configure markdown to html translation. See
-   https://github.com/pauldorman/markdown-clj for valid parameters"
+  "Generates a valid hiccup data structure from a markdown string."
   ([md-str & params]
    (let [html #?(:clj  (md-to-html-string md-str)
                  :cljs (md->html md-str))
