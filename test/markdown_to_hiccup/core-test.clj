@@ -44,6 +44,24 @@
     (let [hiccup [:body {} [:div [:h1 {} "find me"]]]
           expected [:h1 {} "find me"]]
       (is (= expected
-             (m/hicc-in hiccup :h1))))))
+             (m/hicc-in hiccup :h1)))))
+  (testing "it works with multiple keys."
+    (let [nested-hicc [:body {} [:div {} [:div2 {} [:h1 {} "leaf"]]]]
+          expected    [:h1 {} "leaf"]
+          found       (m/hicc-in nested-hicc :body :div :div2 :h1)]
+      (is (= expected found)))))
+
+(deftest hiccup-in
+  (testing "It returns the first nested component of hiccup."
+    (let [hiccup [:body {} [:div [:h1 {} "find me"]]]
+          expected [:h1 {} "find me"]]
+      (is (= expected
+             (m/hiccup-in hiccup :h1)))))
+  (testing "it works with multiple keys."
+    (let [nested-hicc [:body {} [:div {} [:div2 {} [:h1 {} "leaf"]]]]
+          expected    [:h1 {} "leaf"]
+          found       (m/hiccup-in nested-hicc :body :div :div2 :h1)]
+      (is (= expected found)))))
+
 
 

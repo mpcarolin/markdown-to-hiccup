@@ -15,31 +15,93 @@
   ([md-str]
    (md->hiccup md-str {})))
 
-(defn- el-eq?
-  [hiccup keyword]
-  (if (sequential? hiccup)
-    (= (first hiccup) keyword)
-    (= hiccup keyword)))
-
-;; TODO: allow any number of keywords to be passed in, to find nested components
 (defn hicc-in
-  "Accepts a hiccup data structure and a keyword representing
+  "NOTE: please use hiccup-in for better access to nested hiccup.
+  Accepts a hiccup data structure and a keyword representing
   an html element tag (e.g. :body) and returns the first nested
   hiccup vector identified by the keyword."
-  [hiccup kw]
-  (let [root (first hiccup)]
+  [hiccup & kws]
+  (let [kw   (first kws)
+        root (first hiccup)]
+    (cond
+      (nil? kw)              hiccup
+      (empty? hiccup)        []
+      (map? root)            (recur (rest hiccup) kws)
+      (vector? root)         (let [branch-result (apply hicc-in root kws)]
+                               (if (empty? branch-result)
+                                 (recur (rest hiccup) kws)
+                                 branch-result))
+      (= root kw)            (recur hiccup (rest kws))
+      :else                  (recur (rest hiccup) kws))))
+
+(defn- keywords?
+  [& args]
+  (every? keyword? args))
+
+(defn- dec-front
+  "Accepts a list of [keyword count] pairs, and subtracts the count
+   of the first pair. If that count becomes negative, dec-front returns
+   the rest of the list. Otherwise, it returns the list with the new 
+   count value for the first pair."
+  [kw-pairs]
+  (let [[kw count] (first kw-pairs)
+        new-count  (dec count)
+        new-pair   [kw new-count]]
+    (if (neg? new-count)
+      (rest kw-pairs)
+      (cons new-pair (rest kw-pairs)))))
+
+(defn- num-partition
+  "Accepts a list of keywords and numbers. Any place in which 
+  a number does not separate keywords, a zero will be inserted.
+  Returns the arg list as a sequence of keyword -> number pairs
+  nested as lists."
+  [args]
+  (loop [arglist    args
+         ret-vec   []]
+    (let [curr-arg (first arglist)
+          prev-arg (peek ret-vec)]
+      (cond
+        ;; base case
+        (nil? curr-arg)            (if (keyword? prev-arg)
+                                     (partition 2 (conj ret-vec 0))
+                                     (partition 2 ret-vec))
+        ;; recursive cases
+        (keywords? curr-arg
+                   prev-arg)       (recur (rest arglist)
+                                          (conj ret-vec 0 curr-arg))
+
+        :else                      (recur (rest arglist)
+                                          (conj ret-vec curr-arg))))))
+
+(defn- get-nested-hiccup
+  "Recursive helper function for hiccup-in."
+  [hiccup kw-pairs]
+  (let [[kw nth-kw]   (first kw-pairs)
+        front         (first hiccup)]
     (cond
       (empty? hiccup)        []
-      (map? root)            (recur (rest hiccup) kw)
-      (vector? root)         (let [branch-result (hicc-in-3 root kw)]
+      (nil? kw)              hiccup
+      (map? front)           (recur (rest hiccup) kw-pairs)
+      (vector? front)        (let [branch-result (hicc-in-helper front kw-pairs)]
                                (if (empty? branch-result)
-                                 (recur (rest hiccup) kw)
+                                 (recur (rest hiccup) kw-pairs)
                                  branch-result))
-      (el-eq? root kw)       hiccup
-      :else                  (recur (rest hiccup) kw))))
+      (= front kw)           (let [new-pairs (dec-front kw-pairs)]
+                               (if (empty? new-pairs)
+                                 hiccup
+                                 (recur (rest hiccup) (dec-front kw-pairs))))
+      :else                  (recur (rest hiccup) kw-pairs))))
 
-(def hicc [:html {} [:body {} [:h1 {} "hi"]]])
-(hicc-in-3 hicc :body)
+(defn hiccup-in
+  "Accepts a hiccup data structure and any series of args in keyword, index order. 
+   Each keyword represents a hiccup element, and the paired index is which element
+   at that level hicc-in will look in. If no number proceeds a keyword, hiccup-in 
+   will find the first element with that keyword. Returns the nested hiccup vector 
+   identified by the keywords. Example: (hicc-in hiccup :html :body :div 0 :h1 2 :p)"
+  [hiccup & kw-pairs]
+   (let [pathway (num-partition kw-pairs)]
+     (get-nested-hiccup hiccup pathway)))
 
 (defn component
   "Accepts hiccup and returns the same hiccup only
@@ -47,9 +109,8 @@
    if you want to nest your markdown hiccup in existing
    hiccup data structures."
   [hiccup]
-  (let [body (hicc-in-3 hiccup :body)]
-    (cons :div (rest body))))
-
+  (let [body (hiccup-in hiccup :body)]
+    (vec (cons :div (rest body)))))
 
 #?(:clj
   (defn file->hiccup
@@ -58,11 +119,3 @@
   [file-path]
   (let [contents (slurp file-path)]
     (md->hiccup contents))))
-
-(defn -main
-  []
-  (let [md "###Title *bullet"]
-    (println "md->hiccup for md {" md "}. Result:")
-    (println (md->hiccup md))))
-
-
