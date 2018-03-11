@@ -106,9 +106,9 @@
 (defn hiccup-in
   "Accepts a hiccup data structure and any series of args in keyword, index order. 
    Each keyword represents a hiccup element, and the paired index is which element
-   at that level hicc-in will look in. If no number proceeds a keyword, hiccup-in 
+   at that level hiccup-in will look in. If no number proceeds a keyword, hiccup-in 
    will find the first element with that keyword. Returns the nested hiccup vector 
-   identified by the keywords. Example: (hicc-in hiccup :html :body :div 0 :h1 2 :p)"
+   identified by the keywords. Example: (hiccup-in hiccup :html :body :div 0 :h1 2 :p)"
   [hiccup & kw-pairs]
    (let [pathway (num-partition kw-pairs)]
      (get-nested-hiccup hiccup pathway)))
