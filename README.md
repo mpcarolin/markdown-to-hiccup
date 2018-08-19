@@ -37,7 +37,7 @@ If you just want the hiccup without the html, head, and body tags, pass it throu
 ```
 
 If you want a specific nested hiccup vector, use hiccup-in. It lets you specify the keywords
-(and indices for matching neighbor hiccup elements) to extract nested hiccup:
+(and indices for sibling hiccup elements) to extract nested hiccup:
 ```
 (let [hiccup (md->hiccup "#Title\n#SecondTitle")]
 	(hiccup-in hiccup :html :body :h1 0)) ;; note the integer paired with :h1
