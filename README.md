@@ -37,18 +37,29 @@ If you just want the hiccup without the html, head, and body tags, pass it throu
 ```
 
 If you want a specific nested hiccup vector, use hiccup-in. It lets you specify the keywords
-(and indices for matching neighbor hiccup elements) to extract nested hiccup:
+(and indices for sibling hiccup elements) to extract nested hiccup:
 ```
-(let [hiccup (md->hiccup "#Title\n#SecondTitle")]
+(let [hiccup (m/md->hiccup "#Title\n#SecondTitle")]
 	(hiccup-in hiccup :html :body :h1 0)) ;; note the integer paired with :h1
 => [:h1 {} "Title"]
 
 vs.
 
-(let [hiccup (md->hiccup "#Title\n#SecondTitle")]
-	(hiccup-in hiccup :html :body :h1 1)) ;; note the integer paired with :h1
-=> [:h1 {} "Title"]
+(let [hiccup (m/md->hiccup "#Title\n#SecondTitle")]
+	(m/hiccup-in hiccup :html :body :h1 1)) ;; note the integer paired with :h1
+=> [:h1 {} "SecondTitle"]
 ```
+
+If you need to escape html characters (& " > <), pass a map to md->hiccup with the :encode? keyword:
+
+```
+(-> "Ben & Jerry's"
+     (m/md->hiccup {:encode? true})
+     (m/component))
+
+=> [:div {} [:p {} "Ben &amp; Jerry's"]]
+```
+ 
 ### Clojure-only
 Finally, for just Clojure, there is also a function for automatically reading in a markdown file from disk and outputting hiccup:
 ```
