@@ -15,7 +15,8 @@
 (defn decode [s]
   "Replaces all html-encoding strings in s with the encoded character"
   (let [decoded-str (reduce decode-reducer s html-encodings)]
-    (read-string decoded-str)))
+    #?(:clj (read-string decoded-str)
+       :cljs (cljs.reader/read-string decoded-str))))
 
 (defn md->hiccup
   "Accepts a markdown string and returns a hiccup data structure converted from that markdown.
