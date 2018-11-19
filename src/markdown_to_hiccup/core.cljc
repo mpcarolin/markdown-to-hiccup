@@ -1,17 +1,37 @@
 (ns markdown-to-hiccup.core
-  (:require [hickory.core :refer [parse as-hiccup]]
+  (:require [clojure.string :as str]
+            [hickory.core :refer [parse as-hiccup]]
             [markdown.core :refer #?(:clj  [md-to-html-string]
                                      :cljs [md->html])]))
 
+(def html-encodings {"&quot;" "\\\""
+                     "&gt;" ">"
+                     "&lt;" "<"
+                     "&amp;" "&"})
+
+(defn decode-reducer [acc [match replace]]
+  (clojure.string/replace acc match replace))
+
+(defn decode [s]
+  "Replaces all html-encoding strings in s with the encoded character"
+  (let [decoded-str (reduce decode-reducer s html-encodings)]
+    (read-string decoded-str)))
+
 (defn md->hiccup
-  "Generates a valid hiccup data structure from a markdown string."
-  ([md-str & params]
+  "Accepts a markdown string and returns a hiccup data structure converted from that markdown.
+  Also accepts an optional params map. Use the :encode? boolean key to specify whether
+  or not you want html escape characters to be encoded. Example:
+    (md->hiccup \"#Title\" {:encode? true})"
+  ([md-str params]
    (let [html #?(:clj  (md-to-html-string md-str)
                  :cljs (md->html md-str))
-         dom  (parse html)]
-     (first (as-hiccup dom))))
+         dom  (parse html)
+         hiccup (first (as-hiccup dom))]
+     (if (not (:encode? params))
+       (decode (str hiccup))
+       hiccup)))
   ([md-str]
-   (md->hiccup md-str {})))
+   (md->hiccup md-str {:encode? false})))
 
 (defn hicc-in
   "NOTE: please use hiccup-in for better access to nested hiccup.
@@ -106,9 +126,9 @@
 (defn hiccup-in
   "Accepts a hiccup data structure and any series of args in keyword, index order. 
    Each keyword represents a hiccup element, and the paired index is which element
-   at that level hicc-in will look in. If no number proceeds a keyword, hiccup-in 
+   at that level hiccup-in will look in. If no number proceeds a keyword, hiccup-in
    will find the first element with that keyword. Returns the nested hiccup vector 
-   identified by the keywords. Example: (hicc-in hiccup :html :body :div 0 :h1 2 :p)"
+   identified by the keywords. Example: (hiccup-in hiccup :html :body :div 0 :h1 2 :p)"
   [hiccup & kw-pairs]
    (let [pathway (num-partition kw-pairs)]
      (get-nested-hiccup hiccup pathway)))
@@ -129,5 +149,4 @@
   [file-path]
   (let [contents (slurp file-path)]
     (md->hiccup contents))))
-
 
