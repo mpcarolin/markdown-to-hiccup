@@ -10,8 +10,8 @@
       (is (not (nil? found)))
       (is (= expected found))))
   (testing "it decodes html escape characters by default"
-    (let [md "#\"><&"
-          expected [:html {} [:head {}] [:body {} [:h1 {} "\"><&"]]]
+    (let [md "#\"><'&"
+          expected [:html {} [:head {}] [:body {} [:h1 {} "\"><'&\""]]]
           found (m/md->hiccup md)]
       (is (not (nil? found)))
       (is (= expected found))))
@@ -88,3 +88,4 @@
           found       (m/hiccup-in nested-hicc :body :div :div2 :h1)]
       (is (= expected found)))))
 
+(run-tests)

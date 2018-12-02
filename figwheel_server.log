@@ -1,0 +1,15 @@
+[0mCompiling "resources/public/out.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/out.js" in 0.51 seconds.[0m
+notifying browser that file changed:  resources/public/out/goog/deps.js
+notifying browser that file changed:  resources/public/out/cljs_deps.js
+notifying browser that file changed:  resources/public/out/markdown_to_hiccup/core.js
+[0mCompiling "resources/public/out.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/out.js" in 1.522 seconds.[0m
+notifying browser that file changed:  resources/public/out/goog/deps.js
+notifying browser that file changed:  resources/public/out/cljs_deps.js
+notifying browser that file changed:  resources/public/out/markdown_to_hiccup/core.js
+[0mCompiling "resources/public/out.js" from ["src"]...[0m
+[32mSuccessfully compiled "resources/public/out.js" in 1.384 seconds.[0m
+notifying browser that file changed:  resources/public/out/goog/deps.js
+notifying browser that file changed:  resources/public/out/cljs_deps.js
+notifying browser that file changed:  resources/public/out/markdown_to_hiccup/core.js

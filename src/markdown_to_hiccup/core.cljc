@@ -1,22 +1,23 @@
 (ns markdown-to-hiccup.core
+  #?(:clj (:import [org.apache.commons.lang3 StringEscapeUtils]))
   (:require [clojure.string :as str]
+            #?(:cljs [goog.string :as gstr])
+            #?(:cljs [cljs.reader :as r])
             [hickory.core :refer [parse as-hiccup]]
             [markdown.core :refer #?(:clj  [md-to-html-string]
                                      :cljs [md->html])]))
 
-(def html-encodings {"&quot;" "\\\""
-                     "&gt;" ">"
-                     "&lt;" "<"
-                     "&amp;" "&"})
-
-(defn decode-reducer [acc [match replace]]
-  (clojure.string/replace acc match replace))
-
 (defn decode [s]
   "Replaces all html-encoding strings in s with the encoded character"
-  (let [decoded-str (reduce decode-reducer s html-encodings)]
+  (let [decoded-str #?(:clj (. StringEscapeUtils unescapeHtml4 s)
+                       :cljs (gstr/unescapeEntities s))]
+    (println "DECODED:" decoded-str)
     #?(:clj (read-string decoded-str)
-       :cljs (cljs.reader/read-string decoded-str))))
+       :cljs (r/read-string decoded-str))))
+
+(defn replacer
+  [text state]
+  [(.replaceAll text "&amp;" "&") state])
 
 (defn md->hiccup
   "Accepts a markdown string and returns a hiccup data structure converted from that markdown.
@@ -29,7 +30,7 @@
          dom  (parse html)
          hiccup (first (as-hiccup dom))]
      (if (not (:encode? params))
-       (decode (str hiccup))
+       hiccup;(decode (str hiccup))
        hiccup)))
   ([md-str]
    (md->hiccup md-str {:encode? false})))
@@ -60,7 +61,7 @@
 (defn- dec-front
   "Accepts a list of [keyword count] pairs, and subtracts the count
    of the first pair. If that count becomes negative, dec-front returns
-   the rest of the list. Otherwise, it returns the list with the new 
+   the rest of the list. Otherwise, it returns the list with the new
    count value for the first pair."
   [kw-pairs]
   (let [[kw count] (first kw-pairs)
@@ -71,7 +72,7 @@
       (cons new-pair (rest kw-pairs)))))
 
 (defn- num-partition
-  "Accepts a list of keywords and numbers. Any place in which 
+  "Accepts a list of keywords and numbers. Any place in which
   a number does not separate keywords, a zero will be inserted.
   Returns the arg list as a sequence of keyword -> number pairs
   nested as lists."
@@ -150,4 +151,3 @@
   [file-path]
   (let [contents (slurp file-path)]
     (md->hiccup contents))))
-

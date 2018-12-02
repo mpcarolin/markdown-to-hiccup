@@ -1,0 +1,1 @@
+{:main markdown-to-hiccup.core.core, :asset-path "js/out", :output-to "resources/public/out.js", :output-dir "resources/public/out", :optimizations :none}

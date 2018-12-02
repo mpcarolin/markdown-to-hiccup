@@ -1,0 +1,7 @@
+{:deps
+  {org.clojure/clojurescript {:mvn/version "1.10.238"}
+   org.clojure/clojure {:mvn/version "1.9.0"}
+   org.clojure/tools.nrepl {:mvn/version "0.2.12"}
+   markdown-clj {:mvn/version "1.0.2"}
+   proto-repl {:mvn/version "0.3.1"}
+   hickory {:mvn/version "0.7.1"}}}
