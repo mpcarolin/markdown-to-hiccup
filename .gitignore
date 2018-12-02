@@ -13,3 +13,11 @@ pom.xml
 .DS_Store
 *.iml
 *.asc
+/.cljs_node_repl/
+/.cljs_rhino_repl/
+.cpcache
+/.idea/
+/.lein-failures/
+.nrepl-port
+/resources/
+/scripts/
