@@ -21,3 +21,4 @@ pom.xml
 .nrepl-port
 /resources/
 /scripts/
+figwheel_server.log

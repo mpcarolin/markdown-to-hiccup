@@ -9,6 +9,7 @@
   :profiles {:dev {:dependencies [[com.cemerick/piggieback "0.2.1"]
                                   [figwheel-sidecar "0.5.10"]
                                   [proto-repl "0.3.1"]
+                                  [org.clojure/tools.trace "0.7.10"]
                                   [org.clojure/tools.nrepl "0.2.10"]]}}
   :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
   :license {:name "MIT License"
