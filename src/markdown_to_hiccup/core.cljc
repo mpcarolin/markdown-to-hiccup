@@ -1,42 +1,38 @@
 (ns markdown-to-hiccup.core
-  #?(:clj (:import [org.apache.commons.lang3 StringEscapeUtils]))
   (:require [clojure.string :as str]
-            #?(:cljs [goog.string :as gstr])
-            #?(:cljs [cljs.reader :as r])
+            [clojure.spec.alpha :as spec]
+            [markdown-to-hiccup.decode :as d]
             [hickory.core :refer [parse as-hiccup]]
             [markdown.core :refer #?(:clj  [md-to-html-string]
                                      :cljs [md->html])]))
 
-(defn decode [s]
-  "Replaces all html-encoding strings in s with the encoded character"
-  (let [decoded-str #?(:clj (. StringEscapeUtils unescapeHtml4 s)
-                       :cljs (gstr/unescapeEntities s))]
-    (println "DECODED:" decoded-str)
-    #?(:clj (read-string decoded-str)
-       :cljs (r/read-string decoded-str))))
-
-(defn replacer
-  [text state]
-  [(.replaceAll text "&amp;" "&") state])
-
+(spec/def ::markdown string?)
+(spec/def ::hiccup vector?)
+(spec/def ::options (spec/keys :opt-un [::encode?]))
+(spec/fdef md->hiccup
+           :args (spec/cat :md-str ::markdown
+                           :params ::options)
+           :ret ::hiccup)
 (defn md->hiccup
   "Accepts a markdown string and returns a hiccup data structure converted from that markdown.
   Also accepts an optional params map. Use the :encode? boolean key to specify whether
   or not you want html escape characters to be encoded. Example:
     (md->hiccup \"#Title\" {:encode? true})"
   ([md-str params]
-   (let [html #?(:clj  (md-to-html-string md-str)
-                 :cljs (md->html md-str))
+   (let [valid-md (spec/assert ::markdown md-str)
+         encode? (:encode? (spec/assert ::options params))
+         html #?(:clj  (md-to-html-string valid-md)
+                 :cljs (md->html valid-md))
          dom  (parse html)
          hiccup (first (as-hiccup dom))]
-     (if (not (:encode? params))
-       hiccup;(decode (str hiccup))
-       hiccup)))
+     (if encode?
+       hiccup ;; by default encoded by hickory
+       (d/decode hiccup))))
   ([md-str]
    (md->hiccup md-str {:encode? false})))
-
+   
 (defn hicc-in
-  "NOTE: please use hiccup-in for better access to nested hiccup.
+  "Deprecated. Please use hiccup-in for better access to nested hiccup.
   Accepts a hiccup data structure and a keyword representing
   an html element tag (e.g. :body) and returns the first nested
   hiccup vector identified by the keyword."

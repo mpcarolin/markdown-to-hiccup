@@ -1,5 +1,6 @@
 (ns markdown-to-hiccup.core-test
-  (:require [clojure.test :refer :all]
+  (:require #?(:clj [clojure.test :refer :all]
+               :cljs [cljs.test :refer-macros [deftest is testing run-tests]])
             [markdown-to-hiccup.core :as m]))
 
 (deftest md->hiccup
@@ -9,9 +10,9 @@
           found (m/md->hiccup md)]
       (is (not (nil? found)))
       (is (= expected found))))
-  (testing "it decodes html escape characters by default"
-    (let [md "#\"><'&"
-          expected [:html {} [:head {}] [:body {} [:h1 {} "\"><'&\""]]]
+  (testing "it decodes html entities by default"
+    (let [md "#\"><'&––"
+          expected [:html {} [:head {}] [:body {} [:h1 {} "\"><'&––"]]]
           found (m/md->hiccup md)]
       (is (not (nil? found)))
       (is (= expected found))))
@@ -22,12 +23,13 @@
       (is (not (nil? found)))
       (is (= expected found)))))
 
+#?(:clj
 (deftest file->hiccup
   (let [path "./resources/sample.md"
         expected [:html {} [:head {}] [:body {} [:h1 {} "Title"]]]
         found (m/file->hiccup path)]
     (is (not (nil? found)))
-    (is (= expected found))))
+    (is (= expected found)))))
 
 (deftest component
   (testing "It returns the nested h1 component."
@@ -87,5 +89,3 @@
           expected    [:h1 {} "leaf"]
           found       (m/hiccup-in nested-hicc :body :div :div2 :h1)]
       (is (= expected found)))))
-
-(run-tests)
