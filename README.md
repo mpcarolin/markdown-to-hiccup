@@ -6,13 +6,13 @@ Simple library for converting markdown strings or files into Clojure/Script comp
 
 ## Installation
 ### Leiningen/Boot
-`[markdown-to-hiccup "0.5.0"]`
+`[markdown-to-hiccup "0.6.0"]`
 
 ### Clojure CLI/deps.edn
-`markdown-to-hiccup {:mvn/version "0.5.0"}`
+`markdown-to-hiccup {:mvn/version "0.6.0"}`
 
 ### Gradle
-`compile 'markdown-to-hiccup:markdown-to-hiccup:0.5.0'`
+`compile 'markdown-to-hiccup:markdown-to-hiccup:0.6.0'`
 
 ## Usage
 ### Clojure and ClojureScript
@@ -31,7 +31,7 @@ If you just want the hiccup without the html, head, and body tags, pass it throu
 (->> "#Title\n* Bullet"
      (m/md->hiccup)
      (m/component))
-     
+
 => [:div {} [:h1 {} "Title"] [:ul {} [:li {} "Bullet"]]]
 
 ```
@@ -59,7 +59,7 @@ If you need to escape html characters (& " > <), pass a map to md->hiccup with t
 
 => [:div {} [:p {} "Ben &amp; Jerry's"]]
 ```
- 
+
 ### Clojure-only
 Finally, for just Clojure, there is also a function for automatically reading in a markdown file from disk and outputting hiccup:
 ```
