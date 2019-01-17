@@ -3,7 +3,7 @@
   :url "https://github.com/mpcarolin/markdown-to-hiccup"
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [org.clojure/clojurescript "1.10.238"]
-                 [markdown-clj "1.0.2"]
+                 [markdown-clj "1.0.7"]
                  [org.apache.commons/commons-lang3 "3.8.1"]
                  [hickory "0.7.1"]]
   :profiles {:dev {:dependencies [[com.cemerick/piggieback "0.2.1"]
