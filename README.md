@@ -17,7 +17,7 @@ Simple library for converting markdown strings or files into Clojure/Script comp
 ## Usage
 ### Clojure and ClojureScript
 Use md->hiccup to convert a markdown string to hiccup:
-```
+```clojure
 (ns example.core
 	(:require [markdown-to-hiccup.core :as m]))
 
@@ -27,7 +27,7 @@ Use md->hiccup to convert a markdown string to hiccup:
 ```
 
 If you just want the hiccup without the html, head, and body tags, pass it through the component function:
-```
+```clojure
 (->> "#Title\n* Bullet"
      (m/md->hiccup)
      (m/component))
@@ -38,7 +38,7 @@ If you just want the hiccup without the html, head, and body tags, pass it throu
 
 If you want a specific nested hiccup vector, use hiccup-in. It lets you specify the keywords
 (and indices for sibling hiccup elements) to extract nested hiccup:
-```
+```clojure
 (let [hiccup (m/md->hiccup "#Title\n#SecondTitle")]
 	(hiccup-in hiccup :html :body :h1 0)) ;; note the integer paired with :h1
 => [:h1 {} "Title"]
@@ -52,7 +52,7 @@ vs.
 
 If you need to escape html characters (& " > <), pass a map to md->hiccup with the :encode? keyword:
 
-```
+```clojure
 (-> "Ben & Jerry's"
      (m/md->hiccup {:encode? true})
      (m/component))
@@ -62,7 +62,7 @@ If you need to escape html characters (& " > <), pass a map to md->hiccup with t
 
 ### Clojure-only
 Finally, for just Clojure, there is also a function for automatically reading in a markdown file from disk and outputting hiccup:
-```
+```clojure
 (m/file->hiccup file-path-to-markdown-file)
 
 => [:html {} [:head {}] [:body {} [:h1 {} "Title"]]]
