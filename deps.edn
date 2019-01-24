@@ -1,7 +1,10 @@
 {:deps
-  {org.clojure/clojurescript {:mvn/version "1.10.238"}
-   org.clojure/clojure {:mvn/version "1.9.0"}
-   org.clojure/tools.nrepl {:mvn/version "0.2.12"}
+  {org.clojure/clojurescript {:mvn/version "1.10.439"}
+   org.clojure/clojure {:mvn/version "1.10.0"}
+   org.clojure/tools.nrepl {:mvn/version "0.2.13"}
+   org.clojure/spec.alpha {:mvn/version "0.2.176"}
+   org.apache.commons/commons-lang3 {:mvn/version "3.8.1"}
+   com.bhauman/figwheel-main {:mvn/version "0.2.0"}
    markdown-clj {:mvn/version "1.0.7"}
    proto-repl {:mvn/version "0.3.1"}
    hickory {:mvn/version "0.7.1"}}
