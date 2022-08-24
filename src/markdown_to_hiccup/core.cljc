@@ -11,7 +11,7 @@
 (spec/def ::options (spec/keys :opt-un [::encode?]))
 (spec/fdef md->hiccup
            :args (spec/cat :md-str ::markdown
-                           :params ::options)
+                           :params (spec/? ::options))
            :ret ::hiccup)
 (defn md->hiccup
   "Accepts a markdown string and returns a hiccup data structure converted from that markdown.
