@@ -1,4 +1,4 @@
-(defproject markdown-to-hiccup "0.6.2"
+(defproject markdown-to-hiccup "0.6.3"
   :description "Simple library for converting markdown into hiccup data structures for Clojure/Script"
   :url "https://github.com/mpcarolin/markdown-to-hiccup"
   :dependencies [[org.clojure/clojure "1.10.0"]
@@ -23,5 +23,5 @@
   :plugins [[lein-npm "0.6.2"]]
   :npm {:dependencies [[source-map-support "0.4.0"]]}
   :source-paths ["src" "target/classes"]
-  :clean-targets [:target-path "out" "release"]
+  :clean-targets ^{:protect false} [:target-path "out" "release" "resources/public"]
   :target-path "target")
